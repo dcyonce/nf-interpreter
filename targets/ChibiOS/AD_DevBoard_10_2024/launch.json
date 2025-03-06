@@ -1,0 +1,109 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "ST_DISCO_L4R9ZI nanoBooter",
+        "type": "cppdbg",
+        "request": "launch",
+        "miDebuggerPath": "C:/nftools/GNU_Tools_ARM_Embedded/13.3.rel1/arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gdb.exe",
+        "targetArchitecture": "ARM",
+        "program": "${workspaceRoot}/build/nanoBooter.elf",
+        "setupCommands": [
+          {
+            "text": "target extended-remote localhost:3333"
+          },
+          {
+            "text": "monitor reset_config none separate"
+          },
+          {
+            "text": "monitor reset halt"
+          },
+          {
+            "text": "monitor flash write_image erase \"${workspaceRoot}/build/nanoBooter.hex\" "
+          },
+          {
+            "text": "file ${workspaceRoot}/build/nanoBooter.elf"
+          },
+          {
+            "text": "set output-radix 16",
+            "description": "set the default numeric base to 16",
+            "ignoreFailures": false
+          }
+        ],
+        "customLaunchSetupCommands": [
+          {
+            "text": "monitor reset_config none separate"
+          },
+          {
+            "text": "monitor reset halt"
+          }
+        ],
+        "logging": {
+          "moduleLoad": false,
+          "trace": false,
+          "engineLogging": false,
+          "programOutput": true,
+          "exceptions": true
+        },
+        "launchCompleteCommand": "exec-continue",
+        "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+        "debugServerArgs": "-s \"C:/nftools/openocd/scripts/\" -f board/stm32l4r9i-disco.cfg",
+        "serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+        "filterStderr": true,
+        "externalConsole": true,
+        "cwd": "${cwd}"
+      },
+      {
+        "name": "ST_DISCO_L4R9ZI nanoCLR",
+        "type": "cppdbg",
+        "request": "launch",
+        "miDebuggerPath": "C:/nftools/GNU_Tools_ARM_Embedded/13.3.rel1/arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gdb.exe",
+        "targetArchitecture": "ARM",
+        "program": "${workspaceRoot}/build/nanoCLR.elf",
+        "setupCommands": [
+          {
+            "text": "target extended-remote localhost:3333"
+          },
+          {
+            "text": "monitor reset_config none separate"
+          },
+          {
+            "text": "monitor reset halt"
+          },
+          {
+            "text": "monitor flash write_image erase \"${workspaceRoot}/build/nanoCLR.hex\" "
+          },
+          {
+            "text": "file ${workspaceRoot}/build/nanoCLR.elf"
+          },
+          {
+            "text": "set output-radix 16",
+            "description": "set the default numeric base to 16",
+            "ignoreFailures": false
+          }
+        ],
+        "customLaunchSetupCommands": [
+          {
+            "text": "monitor reset_config none separate"
+          },
+          {
+            "text": "monitor reset halt"
+          }
+        ],
+        "logging": {
+          "moduleLoad": false,
+          "trace": false,
+          "engineLogging": false,
+          "programOutput": true,
+          "exceptions": true
+        },
+        "launchCompleteCommand": "exec-continue",
+        "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+        "debugServerArgs": "-s \"C:/nftools/openocd/scripts/\" -f board/stm32l4r9i-disco.cfg",
+        "serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+        "filterStderr": true,
+        "externalConsole": true,
+        "cwd": "${cwd}"
+      }
+    ]
+}

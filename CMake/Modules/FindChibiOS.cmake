@@ -12,7 +12,7 @@ FetchContent_GetProperties(chibios)
 
 # check if the series name is supported 
 
-set(CHIBIOS_STM_SUPPORTED_SERIES "STM32F0xx" "STM32F4xx" "STM32F7xx" "STM32H7xx" "STM32L4xx" CACHE INTERNAL "supported STM series names for ChibiOS")
+set(CHIBIOS_STM_SUPPORTED_SERIES "STM32F0xx" "STM32F4xx" "STM32F7xx" "STM32H7xx" "STM32L4xx" "STM32L4xx+" CACHE INTERNAL "supported STM series names for ChibiOS")
 
 list(FIND CHIBIOS_STM_SUPPORTED_SERIES ${TARGET_SERIES} TARGET_SERIES_NAME_INDEX)
 if(TARGET_SERIES_NAME_INDEX EQUAL -1)

@@ -11,6 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 enum WakeupPin
 {
+  //TODO: Add wakeup 4,5
     WakeupPin_Pin1 = 1,
     WakeupPin_Pin2,
     WakeupPin_Pin3
@@ -58,6 +59,11 @@ HRESULT Library_nf_hardware_stm32_native_nanoFramework_Hardware_Stm32_Power::Dis
         case WakeupPin_Pin1:
             wakeUpPin = PWR_CSR2_EWUP1;
             break;
+      //Added 11-8-24 JACOB
+      #elif defined(PWR_CR3_EWUP1)
+        case WakeupPin_Pin1:
+            wakeUpPin = PWR_CR3_EWUP1;
+            break;
       #else
         #error "missing include for STM32 target PAL"
       #endif
@@ -95,11 +101,19 @@ HRESULT Library_nf_hardware_stm32_native_nanoFramework_Hardware_Stm32_Power::Dis
 
   #endif
 
-  #if defined(STM32F7XX) || defined(STM32H7XX) || defined(STM32L4XX)
+  #if defined(STM32F7XX) || defined(STM32H7XX)
 
     CLEAR_BIT(PWR->CSR2, wakeUpPin);
 
-  #endif    
+  #endif
+
+    #if defined(STM32L4XX)
+
+    CLEAR_BIT(PWR->CR3, wakeUpPin);
+    //CLEAR_BIT(PWR->CSR2, wakeUpPin);
+    //TODO: Changed CSR2 to CR2 Added 11-9-24 JACOB
+
+  #endif
  
     NANOCLR_NOCLEANUP();
 }
@@ -144,6 +158,15 @@ HRESULT Library_nf_hardware_stm32_native_nanoFramework_Hardware_Stm32_Power::Ena
             EXTI->IMR |= EXTI_IMR_IM0;
             EXTI->RTSR |= EXTI_RTSR_TR0;
 
+            break;
+
+      #elif defined(PWR_CR3_EWUP1)
+        case WakeupPin_Pin1:
+            wakeUpPin = PWR_CR3_EWUP1;
+            // need to config the respective EXTI line (PA0)
+            //EXTI->IMR |= EXTI_IMR_IM0;
+            //EXTI->RTSR |= EXTI_RTSR_TR0;
+            //TODO:
             break;
 
       #else
@@ -217,11 +240,23 @@ HRESULT Library_nf_hardware_stm32_native_nanoFramework_Hardware_Stm32_Power::Ena
 
   #endif
 
-  #if defined(STM32F7XX) || defined(STM32H7XX) || defined(STM32L4XX)
+  #if defined(STM32F7XX) || defined(STM32H7XX)
 
     // enable the wake up pin
     SET_BIT(PWR->CSR2, wakeUpPin);
 
+  #endif
+
+  #if defined(STM32L4XX)
+
+    // enable the wake up pin
+    //SET_BIT(PWR->CSR2, wakeUpPin);
+    SET_BIT(PWR->CR3, wakeUpPin | PWR_CR3_EWUP4 | PWR_CR3_EWUP5);
+
+    EXTI->IMR1 |= EXTI_IMR1_IM1 | EXTI_IMR1_IM4 | EXTI_IMR1_IM5;
+    EXTI->RTSR1 |= EXTI_RTSR1_RT1 | EXTI_RTSR1_RT4 | EXTI_RTSR1_RT5;  
+    //SET_BIT(PWR->CR3, wakeUpPin);
+ 
   #endif
     
     NANOCLR_NOCLEANUP();

@@ -56,7 +56,8 @@ void HardFault_Handler(void)
     volatile FaultType faultType = (FaultType)__get_IPSR();
 
     // these are not available in all the STM32 series
-#if defined(STM32F4XX) || defined(STM32F7XX)
+    // DCY:12-2024  Added support for STM32L4XX
+#if defined(STM32F4XX) || defined(STM32F7XX) ||  defined(STM32L4XX)
 
     // Flags about hardfault / busfault
     // See http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0552a/Cihdjcfc.html for reference

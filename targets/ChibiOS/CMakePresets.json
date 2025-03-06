@@ -1,10 +1,11 @@
 {
     "version": 4,
-    "include": [
-        "ORGPAL_PALTHREE/CMakePresets.json",
-        "ORGPAL_PALX/CMakePresets.json",
-        "ST_NUCLEO64_F091RC/CMakePresets.json",
-        "ST_STM32F429I_DISCOVERY/CMakePresets.json",
-        "ST_STM32F769I_DISCOVERY/CMakePresets.json"
-    ]
+  "include": [
+    "ORGPAL_PALTHREE/CMakePresets.json",
+    "ORGPAL_PALX/CMakePresets.json",
+    "ST_NUCLEO64_F091RC/CMakePresets.json",
+    "ST_STM32F429I_DISCOVERY/CMakePresets.json",
+    "ST_STM32F769I_DISCOVERY/CMakePresets.json",
+    "AD_DevBoard_10_2024/CMakePresets.json"
+  ]
 }

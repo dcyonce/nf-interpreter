@@ -1660,7 +1660,7 @@ bool CLR_DBG_Debugger::Debugging_Execution_QueryCLRCapabilities(WP_Message *msg)
             reply.u_SoftwareVersion.CompilerVersion = -1;
 #endif
 
-#if defined(__DATE__)
+#if defined(__DATE__) 
             hal_strncpy_s(
                 reply.u_SoftwareVersion.BuildDate,
                 sizeof(reply.u_SoftwareVersion.BuildDate),

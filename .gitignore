@@ -380,3 +380,6 @@ sdkconfig
 CMakeUserPresets.json
 config/user-tools-repos.json
 config/user-prefs.json
+CMakeCache.txt
+CMakeFiles/cmake.check_cache
+targets/ChibiOS/ST_STM32F429I_DISCOVERY/CMakeLists.txt

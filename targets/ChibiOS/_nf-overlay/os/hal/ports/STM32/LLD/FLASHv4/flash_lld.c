@@ -83,6 +83,13 @@ uint32_t FLASH_CheckErrors()
 {
     uint32_t error = (FLASH->SR & FLASH_FLAG_SR_ERRORS);
 
+    // if (error != FLASH_NO_ERROR)
+    // {
+    //     // DCY: Added in order to have a breakpoint here
+    //     uint32_t g = error;
+    //     g = g+9;
+    // }
+
     // Clear error programming flags
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_SR_ERRORS);
 
@@ -161,11 +168,41 @@ void flash_lld_readBytes(uint32_t startAddress, uint32_t length, uint8_t *buffer
     }
 }
 
+// bool Dummy(uint32_t startAddress)
+// {
+//     if (startAddress >= 0x080A2000)
+//     {
+//         return true;
+//     }
+//     else
+//     {
+//         return false;
+//     }
+// }
+
+
 int flash_lld_write(uint32_t startAddress, uint32_t length, const uint8_t *buffer)
 {
     uint32_t offset = startAddress - FLASH_BASE;
     uint32_t remainingBytes = length;
     uint32_t error = FLASH_NO_ERROR;
+    uint32_t errorcount = 0;
+
+    //test_flash_write();
+
+    // if (startAddress >= 0x080A2000)
+    // {
+    //     // DCY: Added in order to have a breakpoint here
+    //     if (Dummy(startAddress))
+    //     {
+    //         FLASH_CheckErrors();
+    //     }
+    // }
+
+    FLASH_WaitForLastOperation(0);
+
+    // Standard programming, NOT Fast programming
+    CLEAR_BIT(FLASH->CR, FLASH_CR_FSTPG);
 
     // Disable data cache
     __HAL_FLASH_DATA_CACHE_DISABLE();
@@ -176,6 +213,7 @@ int flash_lld_write(uint32_t startAddress, uint32_t length, const uint8_t *buffe
     // Unlock the Flash to enable the flash control register access
     HAL_FLASH_Unlock();
 
+    FLASH->ACR = (FLASH->ACR & ~FLASH_ACR_LATENCY) | FLASH_ACR_LATENCY_4WS;
     // Set PG bit
     SET_BIT(FLASH->CR, FLASH_CR_PG);
 
@@ -199,20 +237,40 @@ int flash_lld_write(uint32_t startAddress, uint32_t length, const uint8_t *buffe
             buffer++;
         } while ((remainingBytes > 0U) & ((offset & STM32_FLASH_LINE_MASK) != 0U));
 
-        // write to flash
-        address[0] = line.w[0];
+        error = FLASH_CheckErrors();
+        if (error != FLASH_NO_ERROR)
+        {
+            // quit on failure
+            errorcount++; // Added in order to have a breakpoint here
+            break;
+        }
+        
+        uint64_t data = ((uint64_t)line.w[1] << 32) | line.w[0];
+        *(volatile uint64_t *)address = data;
 
-        // Barrier to ensure programming is performed in 2 steps, in right order
-        // (independently of compiler optimization behavior)
-        __ISB();
+        // // write to flash
+        // address[0] = line.w[0];
 
-        address[1] = line.w[1];
+        // error = FLASH_CheckErrors();
+
+        // // Barrier to ensure programming is performed in 2 steps, in right order
+        // // (independently of compiler optimization behavior)
+        // __ISB();
+
+        // error = FLASH_CheckErrors();
+
+        // FLASH_WaitForLastOperation(0);
+
+        // address += 1;
+        // address[0] = line.w[1];
 
         FLASH_WaitForLastOperation(0);
 
         error = FLASH_CheckErrors();
         if (error != FLASH_NO_ERROR)
         {
+            // quit on failure
+            errorcount++; // Added in order to have a breakpoint here
             break;
         }
     }
@@ -229,6 +287,7 @@ int flash_lld_write(uint32_t startAddress, uint32_t length, const uint8_t *buffe
     // done here
     return (error == FLASH_NO_ERROR);
 }
+
 
 int flash_lld_isErased(uint32_t startAddress, uint32_t length)
 {

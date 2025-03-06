@@ -48,18 +48,16 @@ static void CompleteTranfer(NF_PAL_SPI *palSpi)
     if (palSpi->ReadSize > 0)
     {
         // because this was a Read transaction, need to copy from DMA buffer to managed buffer
-        int readSize = palSpi->ReadSize;
+        int ReadSize = palSpi->ReadSize;
 
         // Adjust read size for data width of 16bits
         if (palSpi->BufferIs16bits)
-        {
-            readSize *= 2;
-        }
+            ReadSize *= 2;
 
         // invalidate cache over read buffer to ensure that content from DMA is read
         // (only required for Cortex-M7)
         // get the pointer to the read buffer as UINT16 because it's really an UINT16 (2 bytes)
-        cacheBufferInvalidate(palSpi->ReadBuffer, readSize);
+        cacheBufferInvalidate(palSpi->ReadBuffer, (palSpi->ReadSize * 2));
     }
 }
 
@@ -198,6 +196,22 @@ uint16_t ComputeBaudRate(SPI_DEVICE_CONFIGURATION &config, int32_t &actualFreque
     // feeding the SPI because ChibiOS doesn't offer that we have to go with minimum common denominator
     maxSpiFrequency = STM32_SPII2S_MAX;
 
+// JAT: Added Definition for L4
+#elif defined(STM32L4XX)
+
+    // SP1 is feed by APB2 (STM32_PCLK2)
+    actualFrequency = STM32_PCLK2;
+
+    // SPI2 and SPI3 are feed by APB1 (STM32_PCLK1)
+    if (busIndex == 2 || busIndex == 3)
+    {
+        actualFrequency = STM32_PCLK1;
+    }
+
+    // this is not really accurate because there are different max SPI clocks depending on which APB clock source if
+    // feeding the SPI because ChibiOS doesn't offer that we have to go with minimum common denominator
+    maxSpiFrequency = 20000000U;
+
 #elif defined(STM32H7XX)
 
     // SP1, SPI4, SPI5 and SPI6 are feed by APB2 (STM32_PCLK2)
@@ -224,7 +238,7 @@ uint16_t ComputeBaudRate(SPI_DEVICE_CONFIGURATION &config, int32_t &actualFreque
         requestedFrequency = maxSpiFrequency;
     }
 
-    for (; divider < 8; divider++)
+    for (; divider < 7; divider++)
     {
         actualFrequency = actualFrequency / 2;
 
@@ -356,6 +370,9 @@ void GetSPIConfig(SPI_DEVICE_CONFIGURATION &config, SPI_WRITE_READ_SETTINGS &wrc
 #ifdef STM32F7XX
         llConfig->cr2 |= SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0;
 #endif
+#ifdef STM32L4XX
+        llConfig->cr2 |= SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0;
+#endif
     }
 
     // set bus configuration
@@ -366,6 +383,9 @@ void GetSPIConfig(SPI_DEVICE_CONFIGURATION &config, SPI_WRITE_READ_SETTINGS &wrc
         llConfig->cr1 |= SPI_CR1_BIDIMODE;
 #endif
 #ifdef STM32F7XX
+        llConfig->cr2 |= SPI_CR1_BIDIMODE;
+#endif
+#ifdef STM324LXX
         llConfig->cr2 |= SPI_CR1_BIDIMODE;
 #endif
     }
@@ -420,10 +440,12 @@ HRESULT CPU_SPI_nWrite_nRead(
             palSpi->WriteSize = writeSize;
         }
 
-        if (readBuffer != NULL)
-        {
+        // DCY: nanoFramework BUG found 02/04/2025
+        // The readSize must be RESET, otherwise it will take whatever the last call had !
+        //if (readBuffer != NULL)
+        //{
             palSpi->ReadSize = readSize;
-        }
+        //}
 
         // === Setup the operation and init buffers ===
         palSpi->BusIndex = sdev.Spi_Bus;
@@ -488,6 +510,8 @@ HRESULT CPU_SPI_nWrite_nRead(
         {
             // Sync operation
             // perform SPI operation using driver's SYNC API
+            
+            // Write AND Read from the SPI port ?
             if (palSpi->WriteSize != 0 && palSpi->ReadSize != 0)
             {
                 // Transmit+Receive
