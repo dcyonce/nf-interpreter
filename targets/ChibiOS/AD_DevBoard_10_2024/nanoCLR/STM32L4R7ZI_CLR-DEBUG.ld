@@ -21,6 +21,7 @@ MEMORY
     flash5     (rx) : org = 0x00000000, len = 0
     flash6     (rx) : org = 0x00000000, len = 0
     flash7     (rx) : org = 0x00000000, len = 0
+    flash8     (rx) : org = 0x90000000, len = 16M                        /* OCTOSPI1: W25Q128JVSIQ for Deployment, Internal File System, and OTA updates */
     config     (rw) : org = 0x08008000, len = 32k                        /* space reserved for configuration block */
     deployment (rx) : org = 0x080A0000, len = 1408k                      /* space reserved for application deployment */
     ramvt      (wx) : org = 0x00000000, len = 0                          /* initial RAM address is reserved for a copy of the vector table */
@@ -32,6 +33,7 @@ MEMORY
     ram5       (wx) : org = 0x00000000, len = 0                          /* STM32L47ZI does NOT have BCKP SRAM */
     ram6       (wx) : org = 0x00000000, len = 0
     ram7       (wx) : org = 0x00000000, len = 0
+    ram8       (wx) : org = 0x70000000, len = 4096k                      /* OCTOSPI2: IS66WVS4M8ALL PSRAM */
     bootclpbrd (wx) : org = 0x20000000, len = 48                         /* boot clipboard area */
 }
 
@@ -80,11 +82,12 @@ REGION_ALIAS("BSS_RAM", ram0);
 REGION_ALIAS("HEAP_RAM", ram0);
 
 /* RAM region to be used for the nanoFramework CLR managed heap.*/
-REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram0);
+REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram8);
 
 /* RAM region to be used for the boot clipboard.*/
 REGION_ALIAS("SECTION_FOR_BOOTCLIPBOARD", bootclpbrd);
 
+/* Stacks rules inclusion.*/
 INCLUDE rules_stacks.ld
 
 /* RAM region to be used for eth segment.*/

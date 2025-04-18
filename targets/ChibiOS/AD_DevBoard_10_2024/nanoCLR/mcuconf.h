@@ -544,6 +544,7 @@
 /*
  * WSPI driver system settings.
  */
+
 #define STM32_WSPI_USE_OCTOSPI1             TRUE
 #define STM32_WSPI_USE_OCTOSPI2             TRUE
 #define STM32_WSPI_OCTOSPI1_PRESCALER_VALUE 1

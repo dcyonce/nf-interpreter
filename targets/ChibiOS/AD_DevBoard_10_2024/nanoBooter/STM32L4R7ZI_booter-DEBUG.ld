@@ -7,12 +7,12 @@
 */
 
 /*
- * ST32L4R9xI memory setup.
+ * ST32L4R7xI memory setup.
  * Note: Use of ram1, ram2 and ram3 is mutually exclusive with use of ram0.
  */
 MEMORY
 {
-    flash0     (rx) : org = 0x08000000, len = 32k     /* space reserved for nanoBooter (1st two sectors 0x08000000 to 0x08008000)*/
+    flash0     (rx) : org = 0x08000000, len = 32k       /* space reserved for nanoBooter (1st two sectors 0x08000000 to 0x08007FFF)*/
     flash1     (rx) : org = 0x00000000, len = 0
     flash2     (rx) : org = 0x00000000, len = 0
     flash3     (rx) : org = 0x00000000, len = 0
@@ -20,18 +20,20 @@ MEMORY
     flash5     (rx) : org = 0x00000000, len = 0
     flash6     (rx) : org = 0x00000000, len = 0
     flash7     (rx) : org = 0x00000000, len = 0
-    config     (rw) : org = 0x08008000, len = 32k     /* space reserved for configuration block */
-    deployment (rx) : org = 0x00000000, len = 0       /* space reserved for application deployment */
-    ramvt      (wx) : org = 0x00000000, len = 0       /* initial RAM address is reserved for a copy of the vector table */
-    ram0       (wx) : org = 0x20000000, len = 192k-48 /* SRAM1 + SRAM2 + SRAM3 */
-    ram1       (wx) : org = 0x20000000, len = 112k    /* SRAM1 */
-    ram2       (wx) : org = 0x2001C000, len = 16k     /* SRAM2 */
-    ram3       (wx) : org = 0x20020000, len = 64k     /* SRAM3 */
-    ram4       (wx) : org = 0x10000000, len = 64k     /* CCM SRAM */
-    ram5       (wx) : org = 0x40024000, len = 4k      /* BCKP SRAM */
+    flash8     (rx) : org = 0x90000000, len = 16M       /* OCTOSPI1: W25Q128JVSIQ for Deployment, Internal File System, and OTA updates */
+    config     (rw) : org = 0x08008000, len = 32k       /* space reserved for configuration block */
+    deployment (rx) : org = 0x080A0000, len = 1408k     /* space reserved for application deployment */
+    ramvt      (wx) : org = 0x00000000, len = 0         /* initial RAM address is reserved for a copy of the vector table */
+    ram0       (wx) : org = 0x20000000, len = 640k-48   /* SRAM1 + SRAM2 + SRAM3 - boot clipboard */
+    ram1       (wx) : org = 0x20000000, len = 192k      /* SRAM1 */
+    ram2       (wx) : org = 0x20030000, len = 64k       /* SRAM2 */
+    ram3       (wx) : org = 0x20040000, len = 384k      /* SRAM3 */
+    ram4       (wx) : org = 0x00000000, len = 0         /* STM32L47ZI does NOT have CCM SRAM */
+    ram5       (wx) : org = 0x00000000, len = 0         /* STM32L47ZI does NOT have BCKP SRAM */
     ram6       (wx) : org = 0x00000000, len = 0
     ram7       (wx) : org = 0x00000000, len = 0
-    bootclpbrd (wx) : org = 0x20000000, len = 48      /* boot clipboard area */
+    ram8       (wx) : org = 0x70000000, len = 4096k     /* OCTOSPI2: IS66WVS4M8ALL PSRAM */
+    bootclpbrd (wx) : org = 0x20000000, len = 48        /* boot clipboard area */
 }
 
 /* For each data/text section two region are defined, a virtual region
@@ -76,7 +78,10 @@ REGION_ALIAS("DATA_RAM_LMA", flash0);
 REGION_ALIAS("BSS_RAM", ram0);
 
 /* RAM region to be used for the default heap.*/
-REGION_ALIAS("HEAP_RAM", ram4);
+REGION_ALIAS("HEAP_RAM", ram0);
+
+/* RAM region to be used for the nanoFramework CLR managed heap.*/
+REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram8);
 
 /* RAM region to be used for the boot clipboard.*/
 REGION_ALIAS("SECTION_FOR_BOOTCLIPBOARD", bootclpbrd);

@@ -29,7 +29,7 @@ list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LL
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/I2Cv2)
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/MACv1)
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/OTGv1)
-list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/QUADSPIv1)
+list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/OCTOSPIv1)
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/RCCv1)
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/RNGv1)
 list(APPEND CHIBIOS_HAL_INCLUDE_DIRS ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/RTCv2)
@@ -204,7 +204,7 @@ foreach(SRC_FILE ${CHIBIOS_HAL_SRCS})
             ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/I2Cv2
             #${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/MACv1
             ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/OTGv1
-            ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/QUADSPIv1
+            ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/OCTOSPIv1
             ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/RNGv1
             ${chibios_SOURCE_DIR}/os/hal/ports/STM32/LLD/RTCv2
             # Changed from SDMMCv1 to SDMMCv2 11-9-24 JACOB 

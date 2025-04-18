@@ -9,28 +9,37 @@
 // // 8kB blocks (single-banking flash)
 // const BlockRange BlockRange1[] = 
 // {
-//     { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 3 },        // nanoBooter (32kB)   0x0800 0000 - 0x0800 7FFF 
-//     { BlockRange_BLOCKTYPE_CONFIG    ,   4, 7 },        // nanoConfig (32kB)   0x0800 8000 - 0x0800 FFFF
-//     { BlockRange_BLOCKTYPE_CODE      ,   8, 79 },       // nanoCLR    (576kB)  0x0801 0000 - 0x0809 FFFF
-//     { BlockRange_BLOCKTYPE_DEPLOYMENT,   80, 255 },     // Deployment (1408KB) 0x080A 0000 - 0x081F FFFF
+//     { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 3 },         // nanoBooter (32kB)   0x0800 0000 - 0x0800 7FFF 
+//     { BlockRange_BLOCKTYPE_CONFIG    ,   4, 7 },         // nanoConfig (32kB)   0x0800 8000 - 0x0800 FFFF
+//     { BlockRange_BLOCKTYPE_CODE      ,   8, 79 },        // nanoCLR    (576kB)  0x0801 0000 - 0x0809 FFFF
+//     { BlockRange_BLOCKTYPE_DEPLOYMENT,   80, 255 },      // Deployment (1408KB) 0x080A 0000 - 0x081F FFFF
 // };
 
 // 4kB blocks (dual-banking flash)
+// const BlockRange BlockRange1[] = 
+// {
+//     { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 7 },         // nanoBooter (32kB)   0x0800 0000 - 0x0800 7FFF 
+//     { BlockRange_BLOCKTYPE_CONFIG    ,   8, 15 },        // nanoConfig (32kB)   0x0800 8000 - 0x0800 FFFF
+//     { BlockRange_BLOCKTYPE_CODE      ,   16, 159 },      // nanoCLR    (576kB)  0x0801 0000 - 0x0809 FFFF
+//     { BlockRange_BLOCKTYPE_DEPLOYMENT,   160, 511 },     // Deployment (1408KB) 0x080A 0000 - 0x081F FFFF
+// };
+
+// 2kB blocks (dual-banking flash)
 const BlockRange BlockRange1[] = 
 {
-    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 7 },            // nanoBooter (32kB)   0x0800 0000 - 0x0800 7FFF 
-    { BlockRange_BLOCKTYPE_CONFIG    ,   8, 15 },           // nanoConfig (32kB)   0x0800 8000 - 0x0800 FFFF
-    { BlockRange_BLOCKTYPE_CODE      ,   16, 159 },         // nanoCLR    (576kB)  0x0801 0000 - 0x0809 FFFF
-    { BlockRange_BLOCKTYPE_DEPLOYMENT,   160, 511 },        // Deployment (1408KB) 0x080A 0000 - 0x081F FFFF
+    { BlockRange_BLOCKTYPE_BOOTSTRAP ,   0, 15 },            // nanoBooter (32kB)   0x0800 0000 - 0x0800 7FFF 
+    { BlockRange_BLOCKTYPE_CONFIG    ,   16, 31 },           // nanoConfig (32kB)   0x0800 8000 - 0x0800 FFFF
+    { BlockRange_BLOCKTYPE_CODE      ,   32, 319 },          // nanoCLR    (576kB)  0x0801 0000 - 0x0809 FFFF
+    { BlockRange_BLOCKTYPE_DEPLOYMENT,   320, 1023 },        // Deployment (1408KB) 0x080A 0000 - 0x081F FFFF
 };
 
 const BlockRegionInfo BlockRegions[] = 
 {
     {
-        (BlockRegionAttribute_ProgramWidthIs64bits),   // 128 bit program width
+        (BlockRegionAttribute_ProgramWidthIs64bits),    // 64 bit program width
         0x08000000,                                     // start address for block region
-        512,                                            // total number of blocks in this region
-        0x1000,                                         // total number of bytes per block
+        1024,                                           // total number of blocks in this region
+        0x800,                                          // total number of bytes per block (2048 bytes)
         ARRAYSIZE_CONST_EXPR(BlockRange1),
         BlockRange1,
     }

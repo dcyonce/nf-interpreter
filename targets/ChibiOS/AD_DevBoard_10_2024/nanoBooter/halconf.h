@@ -33,6 +33,11 @@
 
 #include "mcuconf.h"
 
+#define HAL_USE_WSPI                TRUE
+#define WSPI_USE_WAIT               TRUE
+#define WSPI_USE_MUTUAL_EXCLUSION   TRUE
+#define HAL_USE_SNOR                TRUE
+
 /**
  * @brief   Enables the PAL subsystem.
  */

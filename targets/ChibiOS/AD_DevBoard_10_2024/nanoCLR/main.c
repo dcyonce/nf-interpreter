@@ -19,12 +19,15 @@
 #include <nanoHAL_v2.h>
 #include <targetPAL.h>
 
+int	snprintf (char *__restrict, size_t, const char *__restrict, ...)
+               _ATTRIBUTE ((__format__ (__printf__, 3, 4)));
+
 // need to declare the Receiver thread here
 osThreadDef(ReceiverThread, osPriorityHigh, 2048, "ReceiverThread");
 // declare CLRStartup thread here 
 osThreadDef(CLRStartupThread, osPriorityNormal, 4096, "CLRStartupThread"); 
 
-void DetermineWakeupSource();
+void DetermineWakeupSource();  
 
 //  Application entry point.
 int main(void) {
@@ -72,7 +75,8 @@ int main(void) {
   //   usbStart(serusbcfg.usbp, &usbcfg);
   //   usbConnectBus(serusbcfg.usbp);
 
-  const char *msg = "\r\n\r\nAtlantis Development nanoFramework CLR\r\n";
+  char msg[64] = "\r\n\r\nAtlantis Development nanoFramework CLR\r\nVersion ";
+  snprintf(&msg[strlen(msg)], sizeof(msg) - strlen(msg), "%d.%d.%d.%d\r\n", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, VERSION_REVISION);
   sdWrite(&SERIAL_DRIVER, (const uint8_t *)msg, strlen(msg));
   
   //chnWrite(&SDU1, (const uint8_t *)msg, strlen(msg));

@@ -87,7 +87,6 @@ REGION_ALIAS("CLR_MANAGED_HEAP_RAM", ram8);
 /* RAM region to be used for the boot clipboard.*/
 REGION_ALIAS("SECTION_FOR_BOOTCLIPBOARD", bootclpbrd);
 
-/* Stacks rules inclusion.*/
 INCLUDE rules_stacks.ld
 
 /* RAM region to be used for eth segment.*/

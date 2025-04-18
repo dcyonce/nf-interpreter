@@ -334,7 +334,7 @@
                                      PIN_MODE_ANALOG(GPIO_PA1_PWRMON_SLOW) |            \
                                      PIN_MODE_INPUT(GPIO_PA2_ACC_INT) |                 \
                                      PIN_MODE_OUTPUT(GPIO_PA3_RGB_2_GREEN) |            \
-                                     PIN_MODE_ANALOG(GPIO_PA4_FLASH_CS) |               \
+                                     PIN_MODE_OUTPUT(GPIO_PA4_FLASH_CS) |               \
                                      PIN_MODE_OUTPUT(GPIO_PA5_RGB_1_GREEN) |            \
                                      PIN_MODE_INPUT(GPIO_PA6_KEYPAD_RIGHT) |            \
                                      PIN_MODE_OUTPUT(GPIO_PA7_RGB_2_BLUE) |             \
@@ -366,7 +366,7 @@
                                      PIN_OSPEED_VERYLOW(GPIO_PA1_PWRMON_SLOW) |         \
                                      PIN_OSPEED_VERYLOW(GPIO_PA2_ACC_INT) |             \
                                      PIN_OSPEED_VERYLOW(GPIO_PA3_RGB_2_GREEN) |         \
-                                     PIN_OSPEED_VERYLOW(GPIO_PA4_FLASH_CS) |            \
+                                     PIN_OSPEED_HIGH(GPIO_PA4_FLASH_CS) |            \
                                      PIN_OSPEED_VERYLOW(GPIO_PA5_RGB_1_GREEN) |         \
                                      PIN_OSPEED_VERYLOW(GPIO_PA6_KEYPAD_RIGHT) |        \
                                      PIN_OSPEED_VERYLOW(GPIO_PA7_RGB_2_BLUE) |          \
@@ -382,7 +382,7 @@
                                      PIN_PUPDR_FLOATING(GPIO_PA1_PWRMON_SLOW) |         \
                                      PIN_PUPDR_PULLUP(GPIO_PA2_ACC_INT) |               \
                                      PIN_PUPDR_FLOATING(GPIO_PA3_RGB_2_GREEN) |         \
-                                     PIN_PUPDR_FLOATING(GPIO_PA4_FLASH_CS) |            \
+                                     PIN_PUPDR_PULLUP(GPIO_PA4_FLASH_CS) |            \
                                      PIN_PUPDR_FLOATING(GPIO_PA5_RGB_1_GREEN) |         \
                                      PIN_PUPDR_FLOATING(GPIO_PA6_KEYPAD_RIGHT) |        \
                                      PIN_PUPDR_FLOATING(GPIO_PA7_RGB_2_BLUE) |          \
@@ -398,7 +398,7 @@
                                      PIN_ODR_LOW(GPIO_PA1_PWRMON_SLOW) |                \
                                      PIN_ODR_LOW(GPIO_PA2_ACC_INT) |                    \
                                      PIN_ODR_LOW(GPIO_PA3_RGB_2_GREEN) |                \
-                                     PIN_ODR_LOW(GPIO_PA4_FLASH_CS) |                   \
+                                     PIN_ODR_HIGH(GPIO_PA4_FLASH_CS) |                   \
                                      PIN_ODR_HIGH(GPIO_PA5_RGB_1_GREEN) |               \
                                      PIN_ODR_LOW(GPIO_PA6_KEYPAD_RIGHT) |               \
                                      PIN_ODR_LOW(GPIO_PA7_RGB_2_BLUE) |                 \
@@ -414,7 +414,7 @@
                                      PIN_AFIO_AF(GPIO_PA1_PWRMON_SLOW, 0U) |            \
                                      PIN_AFIO_AF(GPIO_PA2_ACC_INT, 0U) |                \
                                      PIN_AFIO_AF(GPIO_PA3_RGB_2_GREEN, 0U) |            \
-                                     PIN_AFIO_AF(GPIO_PA4_FLASH_CS, 0U) |               \
+                                     PIN_AFIO_AF(GPIO_PA4_FLASH_CS, 3U) |               \
                                      PIN_AFIO_AF(GPIO_PA5_RGB_1_GREEN, 0U) |            \
                                      PIN_AFIO_AF(GPIO_PA6_KEYPAD_RIGHT, 0U) |           \
                                      PIN_AFIO_AF(GPIO_PA7_RGB_2_BLUE, 0U))
